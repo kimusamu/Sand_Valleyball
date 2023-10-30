@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_world
 from background import Desert_01, Desert_02, Desert_03
+from stick import Stick
 
 def handle_events():
     global running
@@ -18,6 +19,7 @@ def create_world():
     global background_1
     global background_2
     global background_3
+    global stick
 
     running = True
 
@@ -29,6 +31,9 @@ def create_world():
 
     background_3 = Desert_03()
     game_world.add_object(background_3, 2)
+
+    stick = Stick()
+    game_world.add_object(stick, 3)
 
 def update_world():
     game_world.update()
