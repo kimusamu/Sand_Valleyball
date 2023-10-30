@@ -1,0 +1,34 @@
+from pico2d import load_image
+
+class Desert_01:
+    def __init__(self):
+        self.image = load_image('Desert_01.png')
+
+    def draw(self):
+        self.image.draw(0, 0)
+
+    def update(self):
+        pass
+
+
+class Desert_02:
+    def __init__(self):
+        self.image = load_image('Desert_02.png')
+
+    def draw(self):
+        self.image.draw(0, 0)
+
+    def update(self):
+        pass
+
+
+class Desert_03:
+    def __init__(self):
+        self.image = load_image('Desert_03.png')
+
+    def draw(self):
+        self.image.draw(0, 0)
+
+    def update(self):
+        pass
+
