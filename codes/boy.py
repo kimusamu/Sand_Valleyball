@@ -28,21 +28,13 @@ def space_down(e):
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
-# time_out = lambda e : e[0] == 'TIME_OUT'
-
-
-
-
-# Boy Run Speed
-# fill here
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-# Boy Action Speed
-# fill here
+
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 6
@@ -70,7 +62,7 @@ class Idle:
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
-        if boy.frame >= 5:
+        if boy.frame >= 4:
             boy.frame = 1
 
     @staticmethod
@@ -197,10 +189,10 @@ class StateMachine:
 
 class Boy:
     def __init__(self):
-        self.x, self.y = 600, 90
+        self.x, self.y = 600, 70
         self.frame = 0
         self.action = 3
-        self.face_dir = 1
+        self.face_dir = -1
         self.dir = 0
         self.jump = 0
         self.image = load_image('character.png')
