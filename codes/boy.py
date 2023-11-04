@@ -123,8 +123,8 @@ class Sleep:
     @staticmethod
     def enter(boy, e):
         boy.action = 0
-        boy.dir = 1
         boy.frame = 1
+        boy.dir = 1
         pass
 
     @staticmethod
@@ -133,9 +133,22 @@ class Sleep:
 
     @staticmethod
     def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+        if(boy.jump == 0 and boy.y <= 300):
+            boy.dir = 1
+            boy.y += boy.dir * RUN_SPEED_PPS * game_framework.frame_time
 
-        boy.y += boy.dir * RUN_SPEED_PPS * game_framework.frame_time
+        if(boy.jump == 0 and boy.y >= 300):
+            boy.jump = 1
+
+        if(boy.jump == 1 and boy.y >= 70):
+            boy.dir = -1
+            boy.y += boy.dir * RUN_SPEED_PPS * game_framework.frame_time
+
+        if(boy.jump == 1 and boy.y <= 70):
+            boy.jump = 0
+            boy.state_machine.handle_event(('TIME_OUT', 0))
+
+        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
         if boy.frame >= 3:
             boy.frame = 1
@@ -156,7 +169,7 @@ class StateMachine:
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Sleep},
             Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Sleep},
-            Sleep: {right_down: Run, left_down: Run, right_up: Run, left_up: Run}
+            Sleep: {time_out: Idle}
         }
 
     def start(self):
@@ -189,6 +202,7 @@ class Boy:
         self.action = 3
         self.face_dir = 1
         self.dir = 0
+        self.jump = 0
         self.image = load_image('character.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
