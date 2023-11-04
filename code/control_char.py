@@ -3,6 +3,7 @@ from pico2d import *
 import game_world
 from background import Desert_01, Desert_02, Desert_03
 from stick import Stick
+from boy import Boy
 
 def handle_events():
     global running
@@ -13,12 +14,15 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
+        else:
+            boy.handle_event(event)
 
 def create_world():
     global running
     global background_1
     global background_2
     global background_3
+    global char
     global stick
 
     running = True
@@ -34,6 +38,10 @@ def create_world():
 
     stick = Stick()
     game_world.add_object(stick, 3)
+
+    char = Boy()
+    game_world.add_object(char, 3)
+
 
 def update_world():
     game_world.update()
@@ -51,8 +59,10 @@ create_world()
 
 while running:
     handle_events()
-    update_world()
-    render_world()
+    game_world.update()
+    clear_canvas()
+    game_world.render()
+    update_canvas()
     delay(0.01)
 
 
