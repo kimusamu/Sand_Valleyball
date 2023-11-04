@@ -60,7 +60,6 @@ class Idle:
             boy.frame = 5
 
         boy.dir = 0
-        boy.wait_time = get_time() # pico2d import 필요
         pass
 
     @staticmethod
@@ -73,9 +72,6 @@ class Idle:
 
         if boy.frame >= 5:
             boy.frame = 1
-
-        if get_time() - boy.wait_time > 2:
-            boy.state_machine.handle_event(('TIME_OUT', 0))
 
     @staticmethod
     def draw(boy):
@@ -109,7 +105,7 @@ class Run:
             boy.frame = 1
 
         boy.x += boy.dir * RUN_SPEED_PPS * game_framework.frame_time
-        boy.x = clamp(400, boy.x, 800-25)
+        boy.x = clamp(440, boy.x, 800-25)
 
 
     @staticmethod
@@ -126,7 +122,9 @@ class Sleep:
 
     @staticmethod
     def enter(boy, e):
-        boy.frame = 0
+        boy.action = 0
+        boy.dir = 1
+        boy.frame = 1
         pass
 
     @staticmethod
@@ -135,16 +133,20 @@ class Sleep:
 
     @staticmethod
     def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
+        boy.y += boy.dir * RUN_SPEED_PPS * game_framework.frame_time
+
+        if boy.frame >= 3:
+            boy.frame = 1
 
 
     @staticmethod
     def draw(boy):
         if boy.face_dir == -1:
-            boy.image.clip_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, boy.x, boy.y)
+            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, '', boy.x, boy.y, 100, 100)
         else:
-            boy.image.clip_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, boy.x, boy.y)
+            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
 
 
 class StateMachine:
@@ -152,8 +154,8 @@ class StateMachine:
         self.boy = boy
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, time_out: Sleep, space_down: Idle},
-            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Run},
+            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Sleep},
+            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Sleep},
             Sleep: {right_down: Run, left_down: Run, right_up: Run, left_up: Run}
         }
 
