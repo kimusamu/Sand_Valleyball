@@ -6,6 +6,7 @@ from background import Desert_01, Desert_02, Desert_03
 from codes import title_mode
 from stick import Stick
 from boy import Boy
+from enemy import Enemy
 
 # boy = None
 
@@ -18,6 +19,7 @@ def handle_events():
             game_framework.change_mode(title_mode)
         else:
             boy.handle_event(event)
+            enemy.handle_event(event)
 
 def init():
     global desert_1
@@ -25,6 +27,7 @@ def init():
     global desert_3
     global stick
     global boy
+    global enemy
 
     running = True
 
@@ -42,6 +45,9 @@ def init():
 
     boy = Boy()
     game_world.add_object(boy, 3)
+
+    enemy = Enemy()
+    game_world.add_object(enemy, 3)
 
 
 
