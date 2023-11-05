@@ -7,6 +7,7 @@ from codes import title_mode
 from stick import Stick
 from boy import Boy
 from enemy import Enemy
+from ball import Ball
 
 # boy = None
 
@@ -28,6 +29,7 @@ def init():
     global stick
     global boy
     global enemy
+    global ball
 
     running = True
 
@@ -48,6 +50,9 @@ def init():
 
     enemy = Enemy()
     game_world.add_object(enemy, 3)
+
+    ball = Ball()
+    game_world.add_object(ball, 4)
 
 
 
