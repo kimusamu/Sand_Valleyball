@@ -108,7 +108,7 @@ class Run:
 
 
 
-class Sleep:
+class Jump:
 
     @staticmethod
     def enter(enemy, e):
@@ -157,9 +157,9 @@ class StateMachine:
         self.enemy = enemy
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Sleep},
-            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Sleep},
-            Sleep: {time_out: Idle}
+            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
+            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
+            Jump: {time_out: Idle}
         }
 
     def start(self):
