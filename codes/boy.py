@@ -1,6 +1,6 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 
-from pico2d import load_image, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT, SDLK_UP
+from pico2d import load_image, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, draw_rectangle
 import game_world
 import game_framework
 
@@ -204,3 +204,10 @@ class Boy:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        if self.face_dir == -1:
+            return self.x - 50, self.y - 30, self.x, self.y + 30
+        else:
+            return self.x, self.y - 30, self.x + 50, self.y + 30

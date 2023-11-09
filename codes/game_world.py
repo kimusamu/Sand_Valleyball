@@ -1,4 +1,5 @@
 objects = [[] for _ in range(5)]
+collision_pairs = {}
 
 
 def add_object(o, depth = 0):
@@ -19,6 +20,23 @@ def render():
         for o in layer:
             o.draw()
 
+def add_collision_pair(group, a, b): #add_collision_pair('boy:ball', None, ball)
+    if group not in collision_pairs: #dictionary에 키 group이 존재하지 않음
+        print(f'New group {group} added')
+        collision_pairs[group] = [ [], [] ]
+    if a:
+        collision_pairs[group][0].append(a)
+    if b:
+        collision_pairs[group][1].append(b)
+
+
+def remove_collision_object(o):
+    for pairs in collision_pairs.values():
+        if o in pairs[0]:
+            pairs[0].remove(o)
+        if o in pairs[1]:
+            pairs[1].remove(o)
+
 
 def remove_object(o):
     for layer in objects:
@@ -31,3 +49,23 @@ def remove_object(o):
 def clear():
     for layer in objects:
         layer.clear()
+
+def collide(a, b):
+    la, ba, ra, ta = a.get_bb()
+    lb, bb, rb, tb = b.get_bb()
+
+    if la > rb : return False
+    if ra < lb : return False
+    if ta < bb : return False
+    if ba > tb : return False
+
+    return True
+
+
+def handle_collisions():
+    for group, pairs in collision_pairs.items():
+        for a in pairs[0]:
+            for b in pairs[1]:
+                if collide(a, b):
+                    a.handle_collision(group, b)
+                    b.handle_collision(group, a)

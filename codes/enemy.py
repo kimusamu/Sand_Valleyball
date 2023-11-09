@@ -1,4 +1,4 @@
-from pico2d import load_image, clamp,  SDL_KEYDOWN, SDL_KEYUP, SDLK_a, SDLK_d, SDLK_w
+from pico2d import load_image, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_a, SDLK_d, SDLK_w, draw_rectangle
 import game_world
 import game_framework
 
@@ -205,3 +205,10 @@ class Enemy:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        if self.face_dir == -1:
+            return self.x - 50, self.y - 30, self.x, self.y + 30
+        else:
+            return self.x, self.y - 30, self.x + 50, self.y + 30
