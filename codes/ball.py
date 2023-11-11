@@ -17,7 +17,7 @@ class Ball:
         draw_rectangle(*self.get_bb())
 
     def update(self):
-        self.y -= self.velocity * 5
+        self.y -= self.velocity * 2
 
         if(self.y <= 70):
             self.y = 400
