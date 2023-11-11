@@ -11,6 +11,8 @@ class Ball:
         self.x = 600
         self.y = 400
         self.velocity = 1
+        self.left = 1
+        self.right = 0
         self.jump = 0
 
     def draw(self):
@@ -19,11 +21,21 @@ class Ball:
 
     def update(self):
         if(self.jump == 0):
-            self.x -= self.velocity * 0.5
+            if (self.right == 1):
+                self.x += self.velocity * 0.5
+
+            elif (self.left == 1):
+                self.x -= self.velocity * 0.5
+
             self.y -= self.velocity * 5
 
         if(self.jump == 1):
-            self.x -= self.velocity * 0.5
+            if (self.right == 1):
+                self.x += self.velocity * 0.5
+
+            elif (self.left == 1):
+                self.x -= self.velocity * 0.5
+
             self.y += self.velocity * 5
 
         if(self.y >= 600):
@@ -43,7 +55,11 @@ class Ball:
 
     def handle_collision(self, group, other):
         if group == 'boy:ball':
+            self.right = 0
+            self.left = 1
             self.jump = 1
 
         if group == 'enemy:ball':
+            self.right = 1
+            self.left = 0
             self.jump = 1
