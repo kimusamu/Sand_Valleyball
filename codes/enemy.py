@@ -199,6 +199,7 @@ class Enemy:
         self.face_dir = -1
         self.dir = 0
         self.jump = 0
+        self.score = 0
         self.image = load_image('character.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()

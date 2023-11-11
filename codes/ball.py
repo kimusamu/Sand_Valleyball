@@ -67,3 +67,18 @@ class Ball:
             self.right = 1
             self.left = 0
             self.jump = 1
+
+        if group == 'stick:ball':
+            if(self.jump == 0):
+                self.jump = 1
+
+            elif(self.jump == 1):
+                if (self.right == 1):
+                    self.right = 0
+                    self.left = 1
+
+                elif (self.left == 1):
+                    self.right = 1
+                    self.left = 0
+
+                self.jump = 0

@@ -45,6 +45,8 @@ def init():
     stick = Stick()
     game_world.add_object(stick, 3)
 
+    game_world.add_collision_pair('stick:ball', stick, None)
+
     boy = Boy()
     game_world.add_object(boy, 3)
 
@@ -60,6 +62,8 @@ def init():
 
     game_world.add_collision_pair('boy:ball', None, ball)
     game_world.add_collision_pair('enemy:ball', None, ball)
+    game_world.add_collision_pair('stick:ball', None, ball)
+
 
 
 
