@@ -48,11 +48,19 @@ def init():
     boy = Boy()
     game_world.add_object(boy, 3)
 
+    game_world.add_collision_pair('boy:ball', boy, None)
+
     enemy = Enemy()
     game_world.add_object(enemy, 3)
 
+    game_world.add_collision_pair('enemy:ball', enemy, None)
+
     ball = Ball()
     game_world.add_object(ball, 4)
+
+    game_world.add_collision_pair('boy:ball', None, ball)
+    game_world.add_collision_pair('enemy:ball', None, ball)
+
 
 
 
@@ -63,7 +71,7 @@ def finish():
 
 def update():
     game_world.update()
-    # delay(0.1)
+    game_world.handle_collisions()
 
 
 def draw():

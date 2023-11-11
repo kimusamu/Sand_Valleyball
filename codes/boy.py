@@ -26,7 +26,7 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 20.0
+RUN_SPEED_KMPH = 50.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -211,3 +211,6 @@ class Boy:
             return self.x - 50, self.y - 30, self.x, self.y + 30
         else:
             return self.x, self.y - 30, self.x + 50, self.y + 30
+
+    def handle_collision(self, group, other):
+        pass

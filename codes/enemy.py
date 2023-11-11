@@ -212,3 +212,7 @@ class Enemy:
             return self.x - 50, self.y - 30, self.x, self.y + 30
         else:
             return self.x, self.y - 30, self.x + 50, self.y + 30
+
+    def handle_collision(self, group, other):
+        if group == 'enemy:ball':
+            self.jump = 1
