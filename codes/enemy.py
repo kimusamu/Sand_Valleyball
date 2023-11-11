@@ -27,10 +27,16 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 
 PIXEL_PER_METER = (10.0 / 0.3)
+
 RUN_SPEED_KMPH = 20.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+JUMP_SPEED_KMPH = 60.0
+JUMP_SPEED_MPM = (JUMP_SPEED_KMPH * 1000.0 / 60.0)
+JUMP_SPEED_MPS = (JUMP_SPEED_MPM / 60.0)
+JUMP_SPEED_PPS = (JUMP_SPEED_MPS * PIXEL_PER_METER)
 
 
 TIME_PER_ACTION = 0.5
@@ -125,14 +131,14 @@ class Jump:
     def do(enemy):
         if(enemy.jump == 0 and enemy.y <= 300):
             enemy.dir = 1
-            enemy.y += enemy.dir * RUN_SPEED_PPS * game_framework.frame_time
+            enemy.y += enemy.dir * JUMP_SPEED_PPS * game_framework.frame_time
 
         if(enemy.jump == 0 and enemy.y >= 300):
             enemy.jump = 1
 
         if(enemy.jump == 1 and enemy.y >= 70):
             enemy.dir = -1
-            enemy.y += enemy.dir * RUN_SPEED_PPS * game_framework.frame_time
+            enemy.y += enemy.dir * JUMP_SPEED_PPS * game_framework.frame_time
 
         if(enemy.jump == 1 and enemy.y <= 70):
             enemy.jump = 0
@@ -214,5 +220,4 @@ class Enemy:
             return self.x, self.y - 30, self.x + 50, self.y + 30
 
     def handle_collision(self, group, other):
-        if group == 'enemy:ball':
-            self.jump = 1
+        pass

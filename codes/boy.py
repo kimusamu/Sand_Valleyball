@@ -26,10 +26,16 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 50.0
+
+RUN_SPEED_KMPH = 20.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+JUMP_SPEED_KMPH = 60.0
+JUMP_SPEED_MPM = (JUMP_SPEED_KMPH * 1000.0 / 60.0)
+JUMP_SPEED_MPS = (JUMP_SPEED_MPM / 60.0)
+JUMP_SPEED_PPS = (JUMP_SPEED_MPS * PIXEL_PER_METER)
 
 
 TIME_PER_ACTION = 0.5
@@ -124,14 +130,14 @@ class Jump:
     def do(boy):
         if(boy.jump == 0 and boy.y <= 300):
             boy.dir = 1
-            boy.y += boy.dir * RUN_SPEED_PPS * game_framework.frame_time
+            boy.y += boy.dir * JUMP_SPEED_PPS * game_framework.frame_time
 
         if(boy.jump == 0 and boy.y >= 300):
             boy.jump = 1
 
         if(boy.jump == 1 and boy.y >= 70):
             boy.dir = -1
-            boy.y += boy.dir * RUN_SPEED_PPS * game_framework.frame_time
+            boy.y += boy.dir * JUMP_SPEED_PPS * game_framework.frame_time
 
         if(boy.jump == 1 and boy.y <= 70):
             boy.jump = 0

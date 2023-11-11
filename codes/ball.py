@@ -22,19 +22,19 @@ class Ball:
     def update(self):
         if(self.jump == 0):
             if (self.right == 1):
-                self.x += self.velocity * 0.5
+                self.x += self.velocity * 0.7
 
             elif (self.left == 1):
-                self.x -= self.velocity * 0.5
+                self.x -= self.velocity * 0.7
 
             self.y -= self.velocity * 5
 
         if(self.jump == 1):
             if (self.right == 1):
-                self.x += self.velocity * 0.5
+                self.x += self.velocity * 0.7
 
             elif (self.left == 1):
-                self.x -= self.velocity * 0.5
+                self.x -= self.velocity * 0.7
 
             self.y += self.velocity * 5
 
@@ -43,10 +43,14 @@ class Ball:
 
         if(self.y <= 70):
             if(self.x >= 0 and self.x < 400):
+                self.right = 1
+                self.left = 0
                 self.x = 600
                 self.y = 400
 
             elif(self.x >= 400 and self.x < 800):
+                self.right = 0
+                self.left = 1
                 self.x = 200
                 self.y = 400
 
