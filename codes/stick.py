@@ -8,14 +8,14 @@ class Stick:
         self.image = load_image('Stick.png')
 
     def draw(self):
-        self.image.draw(400, 150)
+        self.image.draw(400, 120)
         draw_rectangle(*self.get_bb())
 
     def update(self):
         pass
 
     def get_bb(self):
-        return self.x - 5, self.y - 120, self.x + 5, self.y + 120
+        return self.x - 5, self.y - 100, self.x + 5, self.y + 100
 
     def handle_collision(self, group, other):
         pass

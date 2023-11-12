@@ -28,7 +28,7 @@ def time_out(e):
 
 PIXEL_PER_METER = (10.0 / 0.3)
 
-RUN_SPEED_KMPH = 20.0
+RUN_SPEED_KMPH = 40.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -165,7 +165,7 @@ class StateMachine:
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
             Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
-            Jump: {time_out: Idle}
+            Jump: {space_down: Jump, time_out: Idle}
         }
 
     def start(self):

@@ -1,6 +1,6 @@
 from pico2d import *
 import game_world
-from codes import game_framework
+import game_framework
 
 
 class Ball:
@@ -14,41 +14,83 @@ class Ball:
         self.left = 1
         self.right = 0
         self.jump = 0
+        self.jump_speed = 5
+        self.x_speed = 1
+        self.elapsed_time = 0
+        self.direction = 1
 
     def draw(self):
         self.image.draw(self.x, self.y)
         draw_rectangle(*self.get_bb())
 
     def update(self):
+        frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
+        self.elapsed_time += frame_time  # 경과 시간을 누적
+
+        self.x += self.direction * self.velocity * self.x_speed
+
         if(self.jump == 0):
             if (self.right == 1):
-                self.x += self.velocity * 1
+                self.direction = 1
 
             elif (self.left == 1):
-                self.x -= self.velocity * 1
+                self.direction = -1
 
-            self.y -= self.velocity * 5
+            if self.elapsed_time >= 0.1:
+                self.jump_speed += 1
+                self.x_speed += 0.01
+                self.elapsed_time = 0  # 경과 시간 초기화
+
+            self.y -= self.velocity * self.jump_speed
+
 
         if(self.jump == 1):
             if (self.right == 1):
-                self.x += self.velocity * 1
+                self.direction = 1
 
             elif (self.left == 1):
-                self.x -= self.velocity * 1
+                self.direction = -1
 
-            self.y += self.velocity * 5
+            if self.elapsed_time >= 0.1:
+                self.jump_speed -= 1
+                self.x_speed += 0.01
+                self.elapsed_time = 0  # 경과 시간 초기화
+
+            self.y += self.velocity * self.jump_speed
+
+        if(self.x >= 800):
+            if (self.right == 1):
+                self.right = 0
+                self.left = 1
+
+            elif (self.left == 1):
+                self.right = 1
+                self.left = 0
+
+        if (self.x <= 0):
+            if (self.right == 1):
+                self.right = 0
+                self.left = 1
+
+            elif (self.left == 1):
+                self.right = 1
+                self.left = 0
 
         if(self.y >= 600):
             self.jump = 0
 
         if(self.y <= 70):
-            if(self.x >= 0 and self.x < 400):
+            self.elapsed_time = 0
+            self.jump_speed = 5
+            self.x_speed = 1
+
+            if(self.x < 400):
                 self.right = 1
                 self.left = 0
                 self.x = 600
                 self.y = 400
 
-            elif(self.x >= 400 and self.x < 800):
+            elif(self.x >= 400):
                 self.right = 0
                 self.left = 1
                 self.x = 200
@@ -59,16 +101,28 @@ class Ball:
 
     def handle_collision(self, group, other):
         if group == 'boy:ball':
+            self.jump_speed = 5
+            self.x_speed = 1
+            self.elapsed_time = 0
+
             self.right = 0
             self.left = 1
             self.jump = 1
 
         if group == 'enemy:ball':
+            self.jump_speed = 5
+            self.x_speed = 1
+            self.elapsed_time = 0
+
             self.right = 1
             self.left = 0
             self.jump = 1
 
         if group == 'stick:ball':
+            self.jump_speed = 5
+            self.x_speed = 1
+            self.elapsed_time = 0
+
             if(self.jump == 0):
                 self.jump = 1
 
