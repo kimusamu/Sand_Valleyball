@@ -186,10 +186,6 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.boy)
 
-
-
-
-
 class Boy:
     def __init__(self):
         self.x, self.y = 600, 70
@@ -221,3 +217,10 @@ class Boy:
 
     def handle_collision(self, group, other):
         pass
+
+    def face_directs(self):
+        if self.face_dir == -1:
+            return True
+
+        elif self.face_dir == 1:
+            return False

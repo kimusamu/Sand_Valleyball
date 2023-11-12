@@ -187,10 +187,6 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.enemy)
 
-
-
-
-
 class Enemy:
     def __init__(self):
         self.x, self.y = 100, 70
@@ -222,3 +218,10 @@ class Enemy:
 
     def handle_collision(self, group, other):
         pass
+
+    def face_directs(self):
+        if self.face_dir == -1:
+            return True
+
+        elif self.face_dir == 1:
+            return False

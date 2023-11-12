@@ -1,6 +1,8 @@
 from pico2d import *
 import game_world
 import game_framework
+from boy import Boy
+from enemy import Enemy
 
 
 class Ball:
@@ -26,7 +28,6 @@ class Ball:
     def update(self):
         frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
         self.elapsed_time += frame_time  # 경과 시간을 누적
-
         self.x += self.direction * self.velocity * self.x_speed
 
         if(self.jump == 0):
@@ -59,22 +60,12 @@ class Ball:
             self.y += self.velocity * self.jump_speed
 
         if(self.x >= 800):
-            if (self.right == 1):
-                self.right = 0
-                self.left = 1
-
-            elif (self.left == 1):
-                self.right = 1
-                self.left = 0
+            self.right = 0
+            self.left = 1
 
         if (self.x <= 0):
-            if (self.right == 1):
-                self.right = 0
-                self.left = 1
-
-            elif (self.left == 1):
-                self.right = 1
-                self.left = 0
+            self.right = 1
+            self.left = 0
 
         if(self.y >= 600):
             self.jump = 0
@@ -104,7 +95,6 @@ class Ball:
             self.jump_speed = 5
             self.x_speed = 1
             self.elapsed_time = 0
-
             self.right = 0
             self.left = 1
             self.jump = 1
@@ -113,7 +103,6 @@ class Ball:
             self.jump_speed = 5
             self.x_speed = 1
             self.elapsed_time = 0
-
             self.right = 1
             self.left = 0
             self.jump = 1
