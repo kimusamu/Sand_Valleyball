@@ -81,20 +81,20 @@ class Ball:
 
         if(self.y <= 70):
             self.elapsed_time = 0
-            self.jump_speed = 5
+            self.jump_speed = 1
             self.x_speed = 1
 
             if(self.x < 400):
                 self.right = 1
                 self.left = 0
                 self.x = 600
-                self.y = 400
+                self.y = 600
 
             elif(self.x >= 400):
                 self.right = 0
                 self.left = 1
                 self.x = 200
-                self.y = 400
+                self.y = 600
 
     def get_bb(self):
         return self.x - 20, self.y - 20, self.x + 20, self.y + 20
@@ -119,20 +119,20 @@ class Ball:
             self.jump = 1
 
         if group == 'stick:ball':
-            self.jump_speed = 5
+            self.jump_speed = 1
             self.x_speed = 1
             self.elapsed_time = 0
 
-            if(self.jump == 0):
-                self.jump = 1
+            if (self.right == 1):
+                self.right = 0
+                self.left = 1
 
-            elif(self.jump == 1):
-                if (self.right == 1):
-                    self.right = 0
-                    self.left = 1
+            elif (self.left == 1):
+                self.right = 1
+                self.left = 0
 
-                elif (self.left == 1):
-                    self.right = 1
-                    self.left = 0
-
+            if(self.jump == 1):
                 self.jump = 0
+
+            if (self.jump == 0):
+                self.jump = 1
