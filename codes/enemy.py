@@ -1,4 +1,5 @@
-from pico2d import load_image, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_a, SDLK_d, SDLK_w, draw_rectangle
+from pico2d import load_image, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_a, SDLK_d, SDLK_w, SDLK_s, draw_rectangle
+
 import game_world
 import game_framework
 
@@ -16,11 +17,13 @@ def right_up(e):
 def left_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
 
-
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_a
 
-def space_down(e):
+def jump_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
+
+def spike_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
 
 def time_out(e):
@@ -60,6 +63,9 @@ class Idle:
 
     @staticmethod
     def exit(enemy, e):
+        if spike_down(e):
+            enemy.spike_enemy_xy = 120
+            enemy.spike = 1
         pass
 
     @staticmethod
@@ -72,10 +78,10 @@ class Idle:
     @staticmethod
     def draw(enemy):
         if enemy.face_dir == -1:
-            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, '', enemy.x, enemy.y, 100, 100)
+            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, '', enemy.x, enemy.y, enemy.spike_enemy_xy, enemy.spike_enemy_xy)
 
         elif enemy.face_dir == 1:
-            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, 'h', enemy.x, enemy.y, 100, 100)
+            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, 'h', enemy.x, enemy.y, enemy.spike_enemy_xy, enemy.spike_enemy_xy)
 
 
 class Run:
@@ -91,6 +97,9 @@ class Run:
 
     @staticmethod
     def exit(enemy, e):
+        if spike_down(e):
+            enemy.spike_enemy_xy = 120
+            enemy.spike = 1
         pass
 
     @staticmethod
@@ -107,10 +116,10 @@ class Run:
     @staticmethod
     def draw(enemy):
         if enemy.face_dir == -1:
-            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, '', enemy.x, enemy.y, 100, 100)
+            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, '', enemy.x, enemy.y, enemy.spike_enemy_xy, enemy.spike_enemy_xy)
 
         elif enemy.face_dir == 1:
-            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, 'h', enemy.x, enemy.y, 100, 100)
+            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, 'h', enemy.x, enemy.y, enemy.spike_enemy_xy, enemy.spike_enemy_xy)
 
 
 
@@ -125,6 +134,9 @@ class Jump:
 
     @staticmethod
     def exit(enemy, e):
+        if spike_down(e):
+            enemy.spike_enemy_xy = 120
+            enemy.spike = 1
         pass
 
     @staticmethod
@@ -151,11 +163,11 @@ class Jump:
 
 
     @staticmethod
-    def draw(boy):
-        if boy.face_dir == -1:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, '', boy.x, boy.y, 100, 100)
+    def draw(enemy):
+        if enemy.face_dir == -1:
+            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, '', enemy.x, enemy.y, enemy.spike_enemy_xy, enemy.spike_enemy_xy)
         else:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+            enemy.image.clip_composite_draw(int(enemy.frame) * 100, enemy.action * 100, 100, 100, 0, 'h', enemy.x, enemy.y, enemy.spike_enemy_xy, enemy.spike_enemy_xy)
 
 
 class StateMachine:
@@ -163,9 +175,9 @@ class StateMachine:
         self.enemy = enemy
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
-            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
-            Jump: {space_down: Jump, time_out: Idle}
+            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, jump_up: Jump},
+            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, jump_up: Jump},
+            Jump: {jump_up: Jump, time_out: Idle}
         }
 
     def start(self):
@@ -196,12 +208,22 @@ class Enemy:
         self.dir = 0
         self.jump = 0
         self.score = 0
+        self.spike = 0
+        self.spike_enemy_xy = 100
+        self.spike_time = 0
         self.image = load_image('character.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
     def update(self):
         self.state_machine.update()
+        frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
+        self.spike_time += frame_time  # 경과 시간을 누적
+
+        if self.spike_time >= 3:
+            self.spike_enemy_xy = 100
+            self.spike = 0
+            self.spike_time = 0
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -217,4 +239,9 @@ class Enemy:
             return self.x, self.y - 30, self.x + 50, self.y + 30
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'enemy:ball':
+            if (self.spike == 1):
+                if self.spike_time >= 3:
+                    self.spike_enemy_xy = 100
+                    self.spike = 0
+                    self.spike_time = 0

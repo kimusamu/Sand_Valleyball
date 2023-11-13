@@ -1,6 +1,7 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 
-from pico2d import load_image, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, draw_rectangle
+from pico2d import load_image, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN, draw_rectangle
+
 import game_world
 import game_framework
 
@@ -19,11 +20,14 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
-def space_down(e):
+def jump_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
 
 def time_out(e):
     return e[0] == 'TIME_OUT'
+
+def spike_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
 
 PIXEL_PER_METER = (10.0 / 0.3)
 
@@ -57,6 +61,9 @@ class Idle:
 
     @staticmethod
     def exit(boy, e):
+        if spike_down(e):
+            boy.spike_boy_x_y = 120
+            boy.spike = 1
         pass
 
     @staticmethod
@@ -69,10 +76,10 @@ class Idle:
     @staticmethod
     def draw(boy):
         if boy.face_dir == -1:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, '', boy.x, boy.y, 100, 100)
+            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, '', boy.x, boy.y, boy.spike_boy_x_y, boy.spike_boy_x_y)
 
         elif boy.face_dir == 1:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, 'h', boy.x, boy.y, boy.spike_boy_x_y, boy.spike_boy_x_y)
 
 
 class Run:
@@ -88,6 +95,9 @@ class Run:
 
     @staticmethod
     def exit(boy, e):
+        if spike_down(e):
+            boy.spike_boy_x_y = 120
+            boy.spike = 1
         pass
 
     @staticmethod
@@ -104,10 +114,10 @@ class Run:
     @staticmethod
     def draw(boy):
         if boy.face_dir == -1:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, '', boy.x, boy.y, 100, 100)
+            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, '', boy.x, boy.y, boy.spike_boy_x_y, boy.spike_boy_x_y)
 
         elif boy.face_dir == 1:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, 'h', boy.x, boy.y, boy.spike_boy_x_y, boy.spike_boy_x_y)
 
 
 
@@ -122,6 +132,9 @@ class Jump:
 
     @staticmethod
     def exit(boy, e):
+        if spike_down(e):
+            boy.spike_boy_x_y = 120
+            boy.spike = 1
         pass
 
     @staticmethod
@@ -150,9 +163,9 @@ class Jump:
     @staticmethod
     def draw(boy):
         if boy.face_dir == -1:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, '', boy.x, boy.y, 100, 100)
+            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, '', boy.x, boy.y, boy.spike_boy_x_y, boy.spike_boy_x_y)
         else:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, 'h', boy.x, boy.y, 100, 100)
+            boy.image.clip_composite_draw(int(boy.frame) * 100, boy.action * 100, 100, 100, 0, 'h', boy.x, boy.y, boy.spike_boy_x_y, boy.spike_boy_x_y)
 
 
 class StateMachine:
@@ -160,9 +173,9 @@ class StateMachine:
         self.boy = boy
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
-            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
-            Jump: {space_down: Jump, time_out: Idle}
+            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, jump_up: Jump},
+            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, jump_up: Jump},
+            Jump: {jump_up: Jump, time_out: Idle}
         }
 
     def start(self):
@@ -193,13 +206,23 @@ class Boy:
         self.dir = 0
         self.jump = 0
         self.score = 0
-        self.real_face_dir = -1
+        self.spike = 0
+        self.spike_boy_x_y = 100
+        self.spike_time = 0
         self.image = load_image('character.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
     def update(self):
         self.state_machine.update()
+        frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
+        self.spike_time += frame_time  # 경과 시간을 누적
+
+        if self.spike_time >= 3:
+            self.spike_boy_x_y = 100
+            self.spike = 0
+            self.spike_time = 0
+
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -216,5 +239,8 @@ class Boy:
 
     def handle_collision(self, group, other):
         if group == 'boy:ball':
-            if self.state_machine.cur_state == Jump and self.state_machine.handle_event(('INPUT', 'SPACE')):
-                other.velocity *= 2  # 다른 곳에서 속도를 두 배로 증가시킴
+            if(self.spike == 1):
+                if self.spike_time >= 3:
+                    self.spike_boy_x_y = 100
+                    self.spike = 0
+                    self.spike_time = 0

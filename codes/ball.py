@@ -75,9 +75,10 @@ class Ball:
             self.jump = 0
 
         if(self.y <= 70):
-            self.elapsed_time = 0
-            self.jump_speed = 1
+            self.jump_speed = 5
             self.x_speed = 1
+            self.elapsed_time = 0
+            self.velocity = 1
 
             if(self.x < 400):
                 self.right = 1
@@ -106,10 +107,18 @@ class Ball:
 
     def handle_collision(self, group, other):
         if group == 'boy:ball':
-            self.jump_speed = 5
-            self.x_speed = 1
-            self.elapsed_time = 0
-            self.velocity = 1
+            if (other.spike == 1):
+                self.jump_speed = 3
+                self.x_speed = 3
+                self.elapsed_time = 0
+                self.velocity = 3
+
+            else:
+                self.jump_speed = 5
+                self.x_speed = 1
+                self.elapsed_time = 0
+                self.velocity = 1
+
 
             if(other.face_dir == -1):
                 self.right = 0
@@ -122,10 +131,17 @@ class Ball:
             self.jump = 1
 
         if group == 'enemy:ball':
-            self.jump_speed = 5
-            self.x_speed = 1
-            self.elapsed_time = 0
-            self.velocity = 1
+            if(other.spike == 1 and self.jump == 1):
+                self.jump_speed = 5
+                self.x_speed = 5
+                self.elapsed_time = 0
+                self.velocity = 5
+
+            else:
+                self.jump_speed = 5
+                self.x_speed = 1
+                self.elapsed_time = 0
+                self.velocity = 1
 
             if (other.face_dir == -1):
                 self.right = 0
@@ -138,7 +154,7 @@ class Ball:
             self.jump = 1
 
         if group == 'stick:ball':
-            self.jump_speed = 1
+            self.jump_speed = 5
             self.x_speed = 1
             self.elapsed_time = 0
             self.velocity = 1
@@ -147,11 +163,11 @@ class Ball:
                 self.right = 0
                 self.left = 1
 
-            elif (self.left == 1):
+            if (self.left == 1):
                 self.right = 1
                 self.left = 0
 
-            if(self.jump == 1):
+            if (self.jump == 1):
                 self.jump = 0
 
             if (self.jump == 0):
