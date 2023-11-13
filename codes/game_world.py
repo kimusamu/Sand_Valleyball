@@ -52,12 +52,42 @@ def clear():
 
 def collide(a, b):
     la, ba, ra, ta = a.get_bb()
-    lb, bb, rb, tb = b.get_bb()
+    lb_1, bb_1, rb_1, tb_1 = b.get_bb_1()
+    lb_2, bb_2, rb_2, tb_2 = b.get_bb_2()
+    lb_3, bb_3, rb_3, tb_3 = b.get_bb_3()
+    lb_4, bb_4, rb_4, tb_4 = b.get_bb_4()
+    lb_5, bb_5, rb_5, tb_5 = b.get_bb_5()
+    lb_6, bb_6, rb_6, tb_6 = b.get_bb_6()
 
-    if la > rb : return False
-    if ra < lb : return False
-    if ta < bb : return False
-    if ba > tb : return False
+    if la > rb_1 : return False
+    if ra < lb_1 : return False
+    if ta < bb_1 : return False
+    if ba > tb_1 : return False
+
+    if la > rb_2 : return False
+    if ra < lb_2 : return False
+    if ta < bb_2 : return False
+    if ba > tb_2 : return False
+
+    if la > rb_3 : return False
+    if ra < lb_3 : return False
+    if ta < bb_3 : return False
+    if ba > tb_3 : return False
+
+    if la > rb_4 : return False
+    if ra < lb_4 : return False
+    if ta < bb_4 : return False
+    if ba > tb_4 : return False
+
+    if la > rb_5 : return False
+    if ra < lb_5 : return False
+    if ta < bb_5 : return False
+    if ba > tb_5 : return False
+
+    if la > rb_6 : return False
+    if ra < lb_6 : return False
+    if ta < bb_6 : return False
+    if ba > tb_6 : return False
 
     return True
 

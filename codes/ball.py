@@ -23,7 +23,12 @@ class Ball:
 
     def draw(self):
         self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_bb_1())
+        draw_rectangle(*self.get_bb_2())
+        draw_rectangle(*self.get_bb_3())
+        draw_rectangle(*self.get_bb_4())
+        draw_rectangle(*self.get_bb_5())
+        draw_rectangle(*self.get_bb_6())
 
     def update(self):
         frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
@@ -87,8 +92,18 @@ class Ball:
                 self.x = 200
                 self.y = 600
 
-    def get_bb(self):
-        return self.x - 20, self.y - 20, self.x + 20, self.y + 20
+    def get_bb_1(self):
+        return self.x - 7, self.y - 22, self.x + 7, self.y + 22
+    def get_bb_2(self):
+        return self.x - 11, self.y - 19, self.x + 11, self.y + 19
+    def get_bb_3(self):
+        return self.x - 13, self.y - 16, self.x + 13, self.y + 16
+    def get_bb_4(self):
+        return self.x - 16, self.y - 13, self.x + 16, self.y + 13
+    def get_bb_5(self):
+        return self.x - 19, self.y - 11, self.x + 19, self.y + 11
+    def get_bb_6(self):
+        return self.x - 22, self.y - 7, self.x + 22, self.y + 7
 
     def handle_collision(self, group, other):
         if group == 'boy:ball':
