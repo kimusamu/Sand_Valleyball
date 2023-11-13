@@ -41,8 +41,6 @@ JUMP_SPEED_PPS = (JUMP_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 6
-
-
 class Idle:
 
     @staticmethod
@@ -195,6 +193,7 @@ class Boy:
         self.dir = 0
         self.jump = 0
         self.score = 0
+        self.real_face_dir = -1
         self.image = load_image('character.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
@@ -216,11 +215,6 @@ class Boy:
             return self.x, self.y - 30, self.x + 50, self.y + 30
 
     def handle_collision(self, group, other):
-        pass
-
-    def face_directs(self):
-        if self.face_dir == -1:
-            return True
-
-        elif self.face_dir == 1:
-            return False
+        if group == 'boy:ball':
+            if self.state_machine.cur_state == Jump and self.state_machine.handle_event(('INPUT', 'SPACE')):
+                other.velocity *= 2  # 다른 곳에서 속도를 두 배로 증가시킴

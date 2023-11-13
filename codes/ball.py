@@ -1,9 +1,8 @@
 from pico2d import *
-import game_world
 import game_framework
+import game_world
 from boy import Boy
 from enemy import Enemy
-
 
 class Ball:
     image = None
@@ -110,22 +109,39 @@ class Ball:
             self.jump_speed = 5
             self.x_speed = 1
             self.elapsed_time = 0
-            self.right = 0
-            self.left = 1
+            self.velocity = 1
+
+            if(other.face_dir == -1):
+                self.right = 0
+                self.left = 1
+
+            elif(other.face_dir == 1):
+                self.right = 1
+                self.left = 0
+
             self.jump = 1
 
         if group == 'enemy:ball':
             self.jump_speed = 5
             self.x_speed = 1
             self.elapsed_time = 0
-            self.right = 1
-            self.left = 0
+            self.velocity = 1
+
+            if (other.face_dir == -1):
+                self.right = 0
+                self.left = 1
+
+            elif (other.face_dir == 1):
+                self.right = 1
+                self.left = 0
+
             self.jump = 1
 
         if group == 'stick:ball':
             self.jump_speed = 1
             self.x_speed = 1
             self.elapsed_time = 0
+            self.velocity = 1
 
             if (self.right == 1):
                 self.right = 0

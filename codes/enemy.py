@@ -218,10 +218,3 @@ class Enemy:
 
     def handle_collision(self, group, other):
         pass
-
-    def face_directs(self):
-        if self.face_dir == -1:
-            return True
-
-        elif self.face_dir == 1:
-            return False
