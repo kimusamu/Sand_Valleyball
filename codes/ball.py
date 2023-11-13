@@ -78,17 +78,17 @@ class Ball:
             self.jump_speed = 5
             self.x_speed = 1
             self.elapsed_time = 0
-            self.velocity = 1
+            self.velocity = 0.5
 
             if(self.x < 400):
-                self.right = 1
-                self.left = 0
+                self.right = 0
+                self.left = 1
                 self.x = 600
                 self.y = 600
 
             elif(self.x >= 400):
-                self.right = 0
-                self.left = 1
+                self.right = 1
+                self.left = 0
                 self.x = 200
                 self.y = 600
 
