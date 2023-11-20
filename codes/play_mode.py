@@ -6,7 +6,7 @@ from background import Desert_01, Desert_02, Desert_03
 from codes import title_mode
 from stick import Stick
 from boy import Boy
-from enemy import Enemy
+from enemy_ai import Enemy
 from ball import Ball
 
 # boy = None

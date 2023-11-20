@@ -38,6 +38,7 @@ class Enemy:
         self.image = load_image('character.png')
 
         self.tx = 100
+        self.ty = 70
         self.build_behavior_tree()
 
     def update(self):
@@ -72,10 +73,10 @@ class Enemy:
                     self.spike = 0
                     self.spike_time = 0
 
-    def set_target_location(self, x=None):
-        if not x:
+    def set_target_location(self, x=None, y=None):
+        if not x or not y:
             raise ValueError('위치 지정을 해야 합니다.')
-        self.tx = x
+        self.tx, self.ty = x, y
         return BehaviorTree.SUCCESS
 
     def distance_less_than(self, x1, y1, x2, y2, r):
@@ -94,6 +95,13 @@ class Enemy:
         else:
             return BehaviorTree.FAIL
 
+    def move_to(self, r=0.5):
+        self.move_slightly_to(self.tx, 70)
+        if self.distance_less_than(self.tx, 70, self.x, self.y, r):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
     def move_to_ball(self, r=0.5):
         self.move_slightly_to(play_mode.ball.x, play_mode.ball.y)
         if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
@@ -107,4 +115,4 @@ class Enemy:
 
 
     def build_behavior_tree(self):
-        pass
+        ACT_move_ball =
