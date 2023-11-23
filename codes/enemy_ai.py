@@ -42,10 +42,7 @@ class Enemy_AI:
         self.build_behavior_tree()
 
     def update(self):
-        spike_frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
-        jump_frame_time = game_framework.frame_time
-        self.spike_time += spike_frame_time  # 경과 시간을 누적
-        self.elapsed_time += jump_frame_time
+        self.spike_time += game_framework.frame_time  # 경과 시간을 누적
 
         if self.spike_time >= 3:
             self.spike_enemy_xy = 100
