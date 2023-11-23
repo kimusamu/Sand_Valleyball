@@ -42,9 +42,10 @@ class Enemy:
         self.build_behavior_tree()
 
     def update(self):
-        frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
-        self.spike_time += frame_time  # 경과 시간을 누적
-        self.elapsed_time += frame_time
+        spike_frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
+        jump_frame_time = game_framework.frame_time
+        self.spike_time += spike_frame_time  # 경과 시간을 누적
+        self.elapsed_time += jump_frame_time
 
         if self.spike_time >= 3:
             self.spike_enemy_xy = 100
@@ -101,6 +102,12 @@ class Enemy:
             self.face_dir = 1
             self.action = 2
 
+        if (self.spike == 1):
+            if self.spike_time >= 3:
+                self.spike_enemy_xy = 100
+                self.spike = 0
+                self.spike_time = 0
+
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
         if self.frame >= 4:
@@ -124,9 +131,12 @@ class Enemy:
         if (math.cos(self.dir) < 0):
             self.face_dir = -1
             self.action = 2
+            self.spike = 1
+
         else:
             self.face_dir = 1
             self.action = 2
+            self.spike = 1
 
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
@@ -138,6 +148,32 @@ class Enemy:
         else:
             return BehaviorTree.RUNNING
 
+    def jump_to_ball(self, r = 0.5):
+        if (self.jump == 0 and self.y <= 300):
+            self.dir = 1
+            self.y += self.dir * JUMP_SPEED_PPS * game_framework.frame_time
+
+        if (self.jump == 0 and self.y >= 300):
+            self.jump = 1
+
+        if (self.jump == 1 and self.y >= 70):
+            self.dir = -1
+            self.y += self.dir * JUMP_SPEED_PPS * game_framework.frame_time
+
+        if (self.jump == 1 and self.y <= 70):
+            self.jump = 0
+
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+
+        if self.frame >= 3:
+            self.frame = 1
+
+        if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
+
 
     def build_behavior_tree(self):
         a1 = Action('Set target location', self.set_random_location)
@@ -146,7 +182,7 @@ class Enemy:
 
         c1 = Condition('공이 AI 주변에 있는가?', self.is_ball_nearby, 8)
         a3 = Action('공 주변으로 이동하여 공격한다', self.move_to_ball)
-        SEQ_move_to_ball = Sequence('공 한테로 이동한다', c1, a3)
+        SEQ_move_to_ball = Sequence('공 한테로 이동해서 공격한다', c1, a3)
 
         root = SEL_move_or_around = Selector('공한테 이동 혹은 주변 배회', SEQ_move_to_ball, SEQ_move_to_target_location)
 
