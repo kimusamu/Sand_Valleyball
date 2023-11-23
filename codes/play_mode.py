@@ -6,7 +6,8 @@ from background import Desert_01, Desert_02, Desert_03
 from codes import title_mode
 from stick import Stick
 from boy import Boy
-from enemy_ai import Enemy
+from enemy_ai import Enemy_AI
+from enemy import Enemy
 from ball import Ball
 
 # boy = None
@@ -52,7 +53,7 @@ def init():
 
     game_world.add_collision_pair('boy:ball', boy, None)
 
-    enemy = Enemy()
+    enemy = Enemy_AI()
     game_world.add_object(enemy, 3)
 
     game_world.add_collision_pair('enemy:ball', enemy, None)

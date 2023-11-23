@@ -15,7 +15,7 @@ class Stick:
         pass
 
     def get_bb(self):
-        return self.x - 10, self.y - 120, self.x + 10, self.y + 90
+        return self.x - 10, self.y - 150, self.x + 10, self.y + 90
 
     def handle_collision(self, group, other):
         pass

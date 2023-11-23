@@ -23,7 +23,7 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 6
 
-class Enemy:
+class Enemy_AI:
     def __init__(self):
         self.x, self.y = 100, 70
         self.frame = 0
@@ -102,12 +102,6 @@ class Enemy:
             self.face_dir = 1
             self.action = 2
 
-        if (self.spike == 1):
-            if self.spike_time >= 3:
-                self.spike_enemy_xy = 100
-                self.spike = 0
-                self.spike_time = 0
-
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
         if self.frame >= 4:
@@ -127,16 +121,15 @@ class Enemy:
     def move_to_ball(self, r=0.5):
         self.move_slightly_to(play_mode.ball.x, play_mode.ball.y)
         self.x = clamp(25, self.x, 400 - 50)
+        self.spike = 1
 
         if (math.cos(self.dir) < 0):
             self.face_dir = -1
             self.action = 2
-            self.spike = 1
 
         else:
             self.face_dir = 1
             self.action = 2
-            self.spike = 1
 
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
@@ -173,14 +166,12 @@ class Enemy:
         else:
             return BehaviorTree.RUNNING
 
-
-
     def build_behavior_tree(self):
         a1 = Action('Set target location', self.set_random_location)
         a2 = Action('Move to', self.move_to)
         SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
 
-        c1 = Condition('공이 AI 주변에 있는가?', self.is_ball_nearby, 8)
+        c1 = Condition('공이 AI 주변에 있는가?', self.is_ball_nearby, 10)
         a3 = Action('공 주변으로 이동하여 공격한다', self.move_to_ball)
         SEQ_move_to_ball = Sequence('공 한테로 이동해서 공격한다', c1, a3)
 
