@@ -35,23 +35,27 @@ class Enemy:
         self.spike = 0
         self.spike_enemy_xy = 100
         self.spike_time = 0
+        self.elapsed_time = 0
         self.image = load_image('character.png')
 
-        self.tx = 100
-        self.ty = 70
+        self.tx, self.ty = 100, 70
         self.build_behavior_tree()
 
     def update(self):
         frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
         self.spike_time += frame_time  # 경과 시간을 누적
+        self.elapsed_time += frame_time
 
         if self.spike_time >= 3:
             self.spike_enemy_xy = 100
             self.spike = 0
             self.spike_time = 0
 
+        self.bt.run()
+
     def handle_event(self, event):
         pass
+
     def draw(self):
         if self.face_dir == -1:
             self.image.clip_composite_draw(int(self.frame) * 100, self.action * 100, 100, 100, 0, '', self.x, self.y, self.spike_enemy_xy, self.spike_enemy_xy)
@@ -73,46 +77,77 @@ class Enemy:
                     self.spike = 0
                     self.spike_time = 0
 
-    def set_target_location(self, x=None, y=None):
-        if not x or not y:
-            raise ValueError('위치 지정을 해야 합니다.')
-        self.tx, self.ty = x, y
+    def set_random_location(self):
+        self.tx, self.ty = random.randint(0, 400), 70
         return BehaviorTree.SUCCESS
 
     def distance_less_than(self, x1, y1, x2, y2, r):
-        distanc2 = (x1 - x2) ** 2 + (y1 - y2) ** 2
-        return distanc2 < (r * PIXEL_PER_METER) ** 2
+        distance2 = (x1 - x2) ** 2 + (y1 - y2) ** 2
+        return distance2 < (PIXEL_PER_METER * r) ** 2
 
     def move_slightly_to(self, tx, ty):
         self.dir = math.atan2(ty - self.y, tx - self.x)
         self.speed = RUN_SPEED_PPS
+
         self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
-        self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
 
-    def is_ball_nearby(self, r):
-        if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, 70, r):
-            return BehaviorTree.SUCCESS
+    def move_to(self, r = 0.5):
+        self.move_slightly_to(self.tx, self.ty)
+
+        if (math.cos(self.dir) < 0):
+            self.face_dir = -1
+            self.action = 2
         else:
-            return BehaviorTree.FAIL
+            self.face_dir = 1
+            self.action = 2
 
-    def move_to(self, r=0.5):
-        self.move_slightly_to(self.tx, 70)
-        if self.distance_less_than(self.tx, 70, self.x, self.y, r):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+
+        if self.frame >= 4:
+            self.frame = 1
+
+        if self.distance_less_than(self.tx, self.ty, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
 
+    def is_ball_nearby(self, r):
+        if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
     def move_to_ball(self, r=0.5):
         self.move_slightly_to(play_mode.ball.x, play_mode.ball.y)
+        self.x = clamp(25, self.x, 400 - 50)
+
+        if (math.cos(self.dir) < 0):
+            self.face_dir = -1
+            self.action = 2
+        else:
+            self.face_dir = 1
+            self.action = 2
+
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+
+        if self.frame >= 4:
+            self.frame = 1
+
         if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
 
-    def set_random_location(self):
-        self.tx = random.randint(0, 400)
-        return BehaviorTree.SUCCESS
-
 
     def build_behavior_tree(self):
-        ACT_move_ball =
+        a1 = Action('Set target location', self.set_random_location)
+        a2 = Action('Move to', self.move_to)
+        SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
+
+        c1 = Condition('공이 AI 주변에 있는가?', self.is_ball_nearby, 8)
+        a3 = Action('공 주변으로 이동하여 공격한다', self.move_to_ball)
+        SEQ_move_to_ball = Sequence('공 한테로 이동한다', c1, a3)
+
+        root = SEL_move_or_around = Selector('공한테 이동 혹은 주변 배회', SEQ_move_to_ball, SEQ_move_to_target_location)
+
+        self.bt = BehaviorTree(root)

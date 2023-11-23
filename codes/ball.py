@@ -81,15 +81,15 @@ class Ball:
             self.velocity = 0.5
 
             if(self.x < 400):
-                self.right = 0
-                self.left = 1
-                self.x = 600
-                self.y = 600
-
-            elif(self.x >= 400):
                 self.right = 1
                 self.left = 0
                 self.x = 200
+                self.y = 600
+
+            elif(self.x >= 400):
+                self.right = 0
+                self.left = 1
+                self.x = 600
                 self.y = 600
 
     def get_bb_1(self):
