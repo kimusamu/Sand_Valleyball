@@ -10,8 +10,6 @@ from enemy import Enemy
 from enemy_ai import Enemy_AI
 from ball import Ball
 
-# boy = None
-
 def handle_events():
     events = get_events()
     for event in events:
@@ -68,7 +66,6 @@ def init():
 
 
 
-
 def finish():
     game_world.clear()
     pass
@@ -89,4 +86,3 @@ def pause():
 
 def resume():
     pass
-
