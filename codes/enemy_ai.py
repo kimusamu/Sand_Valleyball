@@ -6,6 +6,8 @@ import game_framework
 import game_world
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 import play_mode
+from ball import Ball
+
 
 PIXEL_PER_METER = (10.0 / 0.3)
 
@@ -22,6 +24,8 @@ JUMP_SPEED_PPS = (JUMP_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 6
+
+ball = Ball()
 
 class Enemy_AI:
     def __init__(self):
@@ -110,13 +114,13 @@ class Enemy_AI:
             return BehaviorTree.RUNNING
 
     def is_ball_nearby(self, r):
-        if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
+        if self.distance_less_than(ball.x, ball.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
 
     def move_to_ball(self, r=0.5):
-        self.move_slightly_to(play_mode.ball.x, play_mode.ball.y)
+        self.move_slightly_to(ball.x, ball.y)
         self.x = clamp(25, self.x, 400 - 50)
         self.spike = 1
 
@@ -133,7 +137,7 @@ class Enemy_AI:
         if self.frame >= 4:
             self.frame = 1
 
-        if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
+        if self.distance_less_than(ball.x, ball.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
@@ -158,7 +162,7 @@ class Enemy_AI:
         if self.frame >= 3:
             self.frame = 1
 
-        if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
+        if self.distance_less_than(ball.x, ball.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING

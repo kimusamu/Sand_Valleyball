@@ -5,10 +5,9 @@ from boy import Boy
 from enemy import Enemy
 
 class Ball:
-    image = None
 
     def __init__(self):
-        Ball.image = load_image('Ball.png')
+        self.image = load_image('Ball.png')
         self.x = 600
         self.y = 400
         self.velocity = 1
