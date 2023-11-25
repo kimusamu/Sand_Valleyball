@@ -119,7 +119,6 @@ class Enemy_AI:
 
     def move_to_ball(self, r=0.5):
         import play_mode
-
         self.move_slightly_to(play_mode.ball.x, play_mode.ball.y)
         self.x = clamp(25, self.x, 400 - 50)
         self.spike = 1
@@ -144,7 +143,6 @@ class Enemy_AI:
 
     def jump_to_ball(self, r = 0.5):
         import play_mode
-
         if (self.jump == 0 and self.y <= 300):
             self.dir = 1
             self.y += self.dir * JUMP_SPEED_PPS * game_framework.frame_time
