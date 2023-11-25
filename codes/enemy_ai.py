@@ -111,15 +111,15 @@ class Enemy_AI:
             return BehaviorTree.RUNNING
 
     def is_ball_nearby(self, r):
-        import play_mode
-        if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
+        import codes
+        if self.distance_less_than(codes.play_mode.ball.x, codes.play_mode.ball.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
 
     def move_to_ball(self, r=0.5):
-        import play_mode
-        self.move_slightly_to(play_mode.ball.x, play_mode.ball.y)
+        import codes
+        self.move_slightly_to(codes.play_mode.ball.x, codes.play_mode.ball.y)
         self.x = clamp(25, self.x, 400 - 50)
         self.spike = 1
 
@@ -136,13 +136,13 @@ class Enemy_AI:
         if self.frame >= 4:
             self.frame = 1
 
-        if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
+        if self.distance_less_than(codes.play_mode.ball.x, codes.play_mode.ball.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
 
     def jump_to_ball(self, r = 0.5):
-        import play_mode
+        import codes
         if (self.jump == 0 and self.y <= 300):
             self.dir = 1
             self.y += self.dir * JUMP_SPEED_PPS * game_framework.frame_time
@@ -162,7 +162,7 @@ class Enemy_AI:
         if self.frame >= 3:
             self.frame = 1
 
-        if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
+        if self.distance_less_than(codes.play_mode.ball.x, codes.play_mode.ball.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
