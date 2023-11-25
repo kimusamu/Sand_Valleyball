@@ -1,11 +1,8 @@
 from pico2d import *
 import game_framework
 import game_world
-from boy import Boy
-from enemy import Enemy
 
 class Ball:
-
     def __init__(self):
         self.image = load_image('Ball.png')
         self.x = 600

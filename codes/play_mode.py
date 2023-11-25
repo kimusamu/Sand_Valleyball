@@ -2,13 +2,14 @@ from pico2d import *
 import game_framework
 
 import game_world
-from background import Desert_01, Desert_02, Desert_03
 from codes import title_mode
-from stick import Stick
 from boy import Boy
-from enemy import Enemy
-from enemy_ai import Enemy_AI
 from ball import Ball
+from stick import Stick
+from background import Desert_01, Desert_02, Desert_03
+from enemy_ai import Enemy_AI
+from enemy import Enemy
+
 
 def handle_events():
     events = get_events()
