@@ -4,12 +4,9 @@ import game_framework
 import game_world
 from codes import title_mode
 from boy import Boy
-from ball import Ball
 from stick import Stick
 from background import Desert_01, Desert_02, Desert_03
-from enemy_ai import Enemy_AI
 from enemy import Enemy
-
 
 def handle_events():
     events = get_events()
@@ -23,15 +20,7 @@ def handle_events():
             enemy.handle_event(event)
 
 def init():
-    global desert_1
-    global desert_2
-    global desert_3
-    global stick
-    global boy
-    global enemy
-    global ball
-
-    running = True
+    global desert_1, desert_2, desert_3, stick, boy, enemy, ball
 
     desert_1 = Desert_01()
     game_world.add_object(desert_1, 0)
@@ -52,11 +41,13 @@ def init():
 
     game_world.add_collision_pair('boy:ball', boy, None)
 
+    from enemy_ai import Enemy_AI
     enemy = Enemy_AI()
     game_world.add_object(enemy, 3)
 
     game_world.add_collision_pair('enemy:ball', enemy, None)
 
+    from ball import Ball
     ball = Ball()
     game_world.add_object(ball, 4)
 

@@ -112,7 +112,6 @@ class Enemy_AI:
 
     def is_ball_nearby(self, r):
         import play_mode
-
         if self.distance_less_than(play_mode.ball.x, play_mode.ball.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
