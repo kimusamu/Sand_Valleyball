@@ -15,9 +15,14 @@ class Ball:
         self.x_speed = 1
         self.elapsed_time = 0
         self.direction = 1
+        self.font = load_font('ENCR10B.TTF', 40)
+        self.boy_score = 0
+        self.enemy_score = 0
 
     def draw(self):
         self.image.draw(self.x, self.y)
+        self.font.draw(150, 500, f'{self.boy_score}', (0, 0, 255))
+        self.font.draw(600, 500, f'{self.enemy_score}', (0, 0, 255))
         draw_rectangle(*self.get_bb_1())
         draw_rectangle(*self.get_bb_2())
         draw_rectangle(*self.get_bb_3())
@@ -77,12 +82,14 @@ class Ball:
             self.velocity = 0.5
 
             if(self.x < 400):
+                self.enemy_score += 1
                 self.right = 0
                 self.left = 1
                 self.x = 200
                 self.y = 600
 
             elif(self.x >= 400):
+                self.boy_score += 1
                 self.right = 0
                 self.left = 1
                 self.x = 600
