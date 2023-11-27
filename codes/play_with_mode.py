@@ -42,8 +42,7 @@ def init():
 
     game_world.add_collision_pair('boy:ball', boy, None)
 
-    from enemy_ai import Enemy_AI
-    enemy = Enemy_AI()
+    enemy = Enemy()
     game_world.add_object(enemy, 3)
 
     game_world.add_collision_pair('enemy:ball', enemy, None)
