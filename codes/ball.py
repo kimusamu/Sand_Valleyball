@@ -77,8 +77,8 @@ class Ball:
             self.velocity = 0.5
 
             if(self.x < 400):
-                self.right = 1
-                self.left = 0
+                self.right = 0
+                self.left = 1
                 self.x = 200
                 self.y = 600
 
@@ -104,10 +104,10 @@ class Ball:
     def handle_collision(self, group, other):
         if group == 'boy:ball':
             if (other.spike == 1):
-                self.jump_speed = 5
-                self.x_speed = 3
+                self.jump_speed = 4
+                self.x_speed = 2
                 self.elapsed_time = 0
-                self.velocity = 3
+                self.velocity = 2
 
             else:
                 self.jump_speed = 5
@@ -130,9 +130,9 @@ class Ball:
         if group == 'enemy:ball':
             if(other.spike == 1 and self.jump == 1):
                 self.jump_speed = 5
-                self.x_speed = 3
+                self.x_speed = 2
                 self.elapsed_time = 0
-                self.velocity = 3
+                self.velocity = 2
 
             else:
                 self.jump_speed = 5
@@ -147,6 +147,10 @@ class Ball:
             elif (other.face_dir == 1):
                 self.right = 1
                 self.left = 0
+
+            if(self.y <= 70):
+                other.x = 100
+                other.y = 70
 
             self.jump = 1
 

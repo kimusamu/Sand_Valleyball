@@ -7,7 +7,6 @@ from boy import Boy
 from stick import Stick
 from background import Desert_01, Desert_02, Desert_03
 from ball import Ball
-from enemy import Enemy
 
 def handle_events():
     events = get_events()
@@ -54,9 +53,6 @@ def init():
     game_world.add_collision_pair('boy:ball', None, ball)
     game_world.add_collision_pair('enemy:ball', None, ball)
     game_world.add_collision_pair('stick:ball', None, ball)
-
-
-
 
 def finish():
     game_world.clear()

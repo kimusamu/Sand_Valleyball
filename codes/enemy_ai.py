@@ -172,7 +172,7 @@ class Enemy_AI:
         a2 = Action('Move to', self.move_to)
         SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
 
-        c1 = Condition('공이 AI 주변에 있는가?', self.is_ball_nearby, 10)
+        c1 = Condition('공이 AI 주변에 있는가?', self.is_ball_nearby, 9)
         a3 = Action('공 주변으로 이동하여 공격한다', self.move_to_ball)
         SEQ_move_to_ball = Sequence('공 한테로 이동해서 공격한다', c1, a3)
 
