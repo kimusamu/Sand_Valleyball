@@ -60,7 +60,6 @@ class Enemy_AI:
             self.image.clip_composite_draw(int(self.frame) * 100, self.action * 100, 100, 100, 0, '', self.x, self.y, self.spike_enemy_xy, self.spike_enemy_xy)
         else:
             self.image.clip_composite_draw(int(self.frame) * 100, self.action * 100, 100, 100, 0, 'h', self.x, self.y, self.spike_enemy_xy, self.spike_enemy_xy)
-        draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         if self.face_dir == -1:

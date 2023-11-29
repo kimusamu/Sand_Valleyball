@@ -31,11 +31,7 @@ class Desert_03:
 
     def draw(self):
         self.image.draw(400, 10)
-        draw_rectangle(*self.get_bb())
 
     def update(self):
         pass
-
-    def get_bb(self):
-        return self.x - 400, self.y, self.x + 400, self.y + 50
 

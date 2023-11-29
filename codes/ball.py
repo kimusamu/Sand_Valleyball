@@ -25,12 +25,6 @@ class Ball:
         self.image.draw(self.x, self.y)
         self.font.draw(150, 500, f'{self.boy_score}', (0, 0, 255))
         self.font.draw(600, 500, f'{self.enemy_score}', (0, 0, 255))
-        draw_rectangle(*self.get_bb_1())
-        draw_rectangle(*self.get_bb_2())
-        draw_rectangle(*self.get_bb_3())
-        draw_rectangle(*self.get_bb_4())
-        draw_rectangle(*self.get_bb_5())
-        draw_rectangle(*self.get_bb_6())
 
     def update(self):
         frame_time = game_framework.frame_time  # 현재 프레임 시간을 얻음
