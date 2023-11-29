@@ -1,6 +1,6 @@
 from pico2d import *
 import game_framework
-from codes import title_mode
+from codes import win_1_mode, win_3_mode
 import game_world
 
 class Ball:
@@ -96,8 +96,12 @@ class Ball:
                 self.x = 600
                 self.y = 600
 
-        if self.boy_score == 5 or self.enemy_score == 5:
-            game_framework.change_mode(title_mode)
+        if self.enemy_score == 5:
+            game_framework.change_mode(win_1_mode)
+
+        elif self.boy_score == 5:
+            game_framework.change_mode(win_3_mode)
+
 
     def get_bb_1(self):
         return self.x - 7, self.y - 22, self.x + 7, self.y + 22
