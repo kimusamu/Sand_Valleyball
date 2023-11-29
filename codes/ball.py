@@ -1,6 +1,6 @@
 from pico2d import *
 import game_framework
-from codes import win_1_mode, win_3_mode
+from codes import win_1_mode, win_2_mode, win_3_mode, win_4_mode
 import game_world
 
 class Ball:
@@ -19,6 +19,7 @@ class Ball:
         self.font = load_font('ENCR10B.TTF', 40)
         self.boy_score = 0
         self.enemy_score = 0
+        self.AI_switch = 0
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -96,11 +97,17 @@ class Ball:
                 self.x = 600
                 self.y = 600
 
-        if self.enemy_score == 5:
+        if self.enemy_score == 5 and self.AI_switch == 0:
             game_framework.change_mode(win_1_mode)
 
-        elif self.boy_score == 5:
+        elif self.boy_score == 5 and self.AI_switch == 0:
             game_framework.change_mode(win_3_mode)
+
+        elif self.enemy_score == 5 and self.AI_switch == 1:
+            game_framework.change_mode(win_2_mode)
+
+        elif self.boy_score == 5 and self.AI_switch == 1:
+            game_framework.change_mode(win_4_mode)
 
 
     def get_bb_1(self):
@@ -143,8 +150,16 @@ class Ball:
 
 
         if group == 'enemy:ball':
-            if(other.spike == 1 and self.jump == 1):
+            if(other.spike == 1 and self.jump == 1 and other.AI_mode == 0):
+                self.AI_switch = 0
                 self.jump_speed = 4
+                self.x_speed = 2
+                self.elapsed_time = 0
+                self.velocity = 2
+
+            elif (other.spike == 1 and self.jump == 1 and other.AI_mode == 1):
+                self.AI_switch = 1
+                self.jump_speed = 5
                 self.x_speed = 2
                 self.elapsed_time = 0
                 self.velocity = 2

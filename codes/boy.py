@@ -205,7 +205,6 @@ class Boy:
         self.face_dir = -1
         self.dir = 0
         self.jump = 0
-        self.score = 0
         self.spike = 0
         self.spike_boy_x_y = 100
         self.spike_time = 0

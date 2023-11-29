@@ -32,12 +32,12 @@ class Enemy_AI:
         self.face_dir = -1
         self.dir = 0
         self.jump = 0
-        self.score = 0
         self.spike = 0
         self.spike_enemy_xy = 100
         self.spike_time = 0
         self.elapsed_time = 0
         self.image = load_image('character.png')
+        self.AI_mode = 1
 
         self.tx, self.ty = 100, 70
         self.build_behavior_tree()
@@ -134,32 +134,6 @@ class Enemy_AI:
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
         if self.frame >= 4:
-            self.frame = 1
-
-        if self.distance_less_than(codes.play_mode.ball.x, codes.play_mode.ball.y, self.x, self.y, r):
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.RUNNING
-
-    def jump_to_ball(self, r = 0.5):
-        import codes
-        if (self.jump == 0 and self.y <= 300):
-            self.dir = 1
-            self.y += self.dir * JUMP_SPEED_PPS * game_framework.frame_time
-
-        if (self.jump == 0 and self.y >= 300):
-            self.jump = 1
-
-        if (self.jump == 1 and self.y >= 70):
-            self.dir = -1
-            self.y += self.dir * JUMP_SPEED_PPS * game_framework.frame_time
-
-        if (self.jump == 1 and self.y <= 70):
-            self.jump = 0
-
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
-
-        if self.frame >= 3:
             self.frame = 1
 
         if self.distance_less_than(codes.play_mode.ball.x, codes.play_mode.ball.y, self.x, self.y, r):

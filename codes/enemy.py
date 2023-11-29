@@ -207,11 +207,11 @@ class Enemy:
         self.face_dir = -1
         self.dir = 0
         self.jump = 0
-        self.score = 0
         self.spike = 0
         self.spike_enemy_xy = 100
         self.spike_time = 0
         self.image = load_image('character.png')
+        self.AI_mode = 0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
