@@ -144,7 +144,7 @@ class Ball:
 
         if group == 'enemy:ball':
             if(other.spike == 1 and self.jump == 1):
-                self.jump_speed = 5
+                self.jump_speed = 4
                 self.x_speed = 2
                 self.elapsed_time = 0
                 self.velocity = 2
@@ -162,10 +162,6 @@ class Ball:
             elif (other.face_dir == 1):
                 self.right = 1
                 self.left = 0
-
-            if(self.y <= 70):
-                other.x = 100
-                other.y = 70
 
             self.jump = 1
 
