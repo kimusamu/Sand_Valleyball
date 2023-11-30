@@ -70,6 +70,7 @@ class Enemy_AI:
     def handle_collision(self, group, other):
         if group == 'enemy:ball':
             if (self.spike == 1):
+                self.spike_enemy_xy = 120
                 if self.spike_time >= 3:
                     self.spike_enemy_xy = 100
                     self.spike = 0

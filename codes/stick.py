@@ -9,7 +9,7 @@ class Stick:
 
     def draw(self):
         self.image.draw(400, 120)
-        
+
     def update(self):
         pass
 
