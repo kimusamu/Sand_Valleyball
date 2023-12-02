@@ -1,10 +1,14 @@
 import game_framework
-from pico2d import load_image, delay, clear_canvas, update_canvas, get_events, get_time, SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE, SDLK_a, SDLK_e, SDLK_t
+from pico2d import load_image, delay, clear_canvas, update_canvas, get_events, get_time, SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE, SDLK_a, SDLK_e, SDLK_t, load_music
 from codes import play_mode, play_with_mode, tutorial_mode
 
 def init():
-    global image
+    global image, music
     image = load_image('titles.png')
+    music = load_music('main_sound.mp3')
+    music.set_volume(32)
+    music.repeat_play()
+
 
 def finish():
     global image

@@ -10,14 +10,16 @@ data_files = [
     'Desert_03.png',
     'ENCR10B.TTF',
     'Stick.png',
-    'title.png',
     'titles.png',
     'tuk_credit.png',
     'tutorials.png',
     'win_image_1.png',
     'win_image_2.png',
     'win_image_3.png',
-    'win_image_4.png'
+    'win_image_4.png',
+    'main_sound.mp3',
+    'game_sound.mp3',
+    'ball_sound.wav',
 ]
 
 # 데이타가 들어있는 폴더들을 지정하세요.

@@ -7,6 +7,7 @@ def init():
     global image
     image = load_image('tutorials.png')
 
+
 def finish():
     global image
     del image

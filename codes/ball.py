@@ -4,8 +4,14 @@ from codes import win_1_mode, win_2_mode, win_3_mode, win_4_mode
 import game_world
 
 class Ball:
+    image = None
+    enemy_ball_sound = None
+    boy_ball_sound = None
+    stick_ball_sound = None
+
     def __init__(self):
-        self.image = load_image('Ball.png')
+        if Ball.image == None:
+            self.image = load_image('Ball.png')
         self.x = 600
         self.y = 400
         self.velocity = 1
@@ -20,6 +26,14 @@ class Ball:
         self.boy_score = 0
         self.enemy_score = 0
         self.AI_switch = 0
+
+        if not Ball.enemy_ball_sound:
+            Ball.enemy_ball_sound = load_wav('ball_sound.wav')
+            Ball.boy_ball_sound = load_wav('ball_sound.wav')
+            Ball.stick_ball_sound = load_wav('ball_sound.wav')
+            Ball.enemy_ball_sound.set_volume(50)
+            Ball.boy_ball_sound.set_volume(50)
+            Ball.stick_ball_sound.set_volume(50)
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -119,11 +133,13 @@ class Ball:
 
     def handle_collision(self, group, other):
         if group == 'boy:ball':
+            Ball.boy_ball_sound.play()
+
             if (other.spike == 1):
-                self.jump_speed = 4
-                self.x_speed = 2
+                self.jump_speed = 5
+                self.x_speed = 3
                 self.elapsed_time = 0
-                self.velocity = 2
+                self.velocity = 3
 
             else:
                 self.jump_speed = 5
@@ -144,19 +160,21 @@ class Ball:
 
 
         if group == 'enemy:ball':
+            Ball.enemy_ball_sound.play()
+
             if(other.spike == 1 and self.jump == 1 and other.AI_mode == 0):
                 self.AI_switch = 0
-                self.jump_speed = 4
-                self.x_speed = 2
+                self.jump_speed = 5
+                self.x_speed = 3
                 self.elapsed_time = 0
-                self.velocity = 2
+                self.velocity = 3
 
             elif (other.spike == 1 and self.jump == 1 and other.AI_mode == 1):
                 self.AI_switch = 1
                 self.jump_speed = 5
-                self.x_speed = 2
+                self.x_speed = 3
                 self.elapsed_time = 0
-                self.velocity = 2
+                self.velocity = 3
 
             else:
                 self.jump_speed = 5
@@ -176,6 +194,8 @@ class Ball:
 
 
         if group == 'stick:ball':
+            Ball.stick_ball_sound.play()
+
             self.jump_speed = 5
             self.x_speed = 1
             self.elapsed_time = 0
