@@ -1,0 +1,25 @@
+# 메인 파일 이름을 지정하세요.
+main_file = 'main.py'# fill here
+
+# 데이타 파일들을 지정하세요.
+data_files = [
+    'Ball.png',
+    'character.png',
+    'Desert_01.png',
+    'Desert_02.png',
+    'Desert_03.png',
+    'ENCR10B.TTF',
+    'Stick.png',
+    'title.png',
+    'titles.png',
+    'tuk_credit.png',
+    'tutorials.png',
+    'win_image_1.png',
+    'win_image_2.png',
+    'win_image_3.png',
+    'win_image_4.png'
+]
+
+# 데이타가 들어있는 폴더들을 지정하세요.
+data_folders = []
+
