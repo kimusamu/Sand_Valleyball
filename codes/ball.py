@@ -1,6 +1,6 @@
 from pico2d import *
 import game_framework
-from codes import win_1_mode, win_2_mode, win_3_mode, win_4_mode
+from codes import win_1_mode, win_2_mode, win_3_mode, win_4_mode, boy, enemy, enemy_ai
 import game_world
 
 class Ball:
@@ -97,6 +97,12 @@ class Ball:
                 self.left = 1
                 self.x = 200
                 self.y = 600
+                self.velocity = 1
+                self.jump = 0
+                self.jump_speed = 5
+                self.x_speed = 1
+                self.elapsed_time = 0
+                self.direction = 1
 
             elif(self.x >= 400):
                 self.boy_score += 1
@@ -104,17 +110,79 @@ class Ball:
                 self.left = 1
                 self.x = 600
                 self.y = 600
+                self.velocity = 1
+                self.jump = 0
+                self.jump_speed = 5
+                self.x_speed = 1
+                self.elapsed_time = 0
+                self.direction = 1
 
         if self.enemy_score == 5 and self.AI_switch == 0:
+            boy.x = 600
+            boy.y = 70
+            enemy.x = 100
+            enemy.y = 70
+            self.x = 600
+            self.y = 400
+            self.velocity = 1
+            self.left = 1
+            self.right = 0
+            self.jump = 0
+            self.jump_speed = 5
+            self.x_speed = 1
+            self.elapsed_time = 0
+            self.direction = 1
             game_framework.change_mode(win_1_mode)
 
         elif self.boy_score == 5 and self.AI_switch == 0:
+            boy.x = 600
+            boy.y = 70
+            enemy.x = 100
+            enemy.y = 70
+            self.x = 600
+            self.y = 400
+            self.velocity = 1
+            self.left = 1
+            self.right = 0
+            self.jump = 0
+            self.jump_speed = 5
+            self.x_speed = 1
+            self.elapsed_time = 0
+            self.direction = 1
             game_framework.change_mode(win_3_mode)
 
         elif self.enemy_score == 5 and self.AI_switch == 1:
+            boy.x = 600
+            boy.y = 70
+            enemy_ai.x = 100
+            enemy_ai.y = 70
+            self.x = 600
+            self.y = 400
+            self.velocity = 1
+            self.left = 1
+            self.right = 0
+            self.jump = 0
+            self.jump_speed = 5
+            self.x_speed = 1
+            self.elapsed_time = 0
+            self.direction = 1
             game_framework.change_mode(win_2_mode)
 
         elif self.boy_score == 5 and self.AI_switch == 1:
+            boy.x = 600
+            boy.y = 70
+            enemy_ai.x = 100
+            enemy_ai.y = 70
+            self.x = 600
+            self.y = 400
+            self.velocity = 1
+            self.left = 1
+            self.right = 0
+            self.jump = 0
+            self.jump_speed = 5
+            self.x_speed = 1
+            self.elapsed_time = 0
+            self.direction = 1
             game_framework.change_mode(win_4_mode)
 
 
