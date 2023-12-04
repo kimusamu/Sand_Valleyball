@@ -105,7 +105,7 @@ class Ball:
                 self.x = 600
                 self.y = 600
 
-        if self.enemy_score == 5 and self.AI_switch == 0:
+        if self.enemy_score == 10 and self.AI_switch == 0:
             boy.x = 600
             boy.y = 70
             enemy.x = 100
@@ -122,7 +122,7 @@ class Ball:
             self.direction = 1
             game_framework.change_mode(win_1_mode)
 
-        elif self.boy_score == 5 and self.AI_switch == 0:
+        elif self.boy_score == 10 and self.AI_switch == 0:
             boy.x = 600
             boy.y = 70
             enemy.x = 100
@@ -139,7 +139,7 @@ class Ball:
             self.direction = 1
             game_framework.change_mode(win_3_mode)
 
-        elif self.enemy_score == 5 and self.AI_switch == 1:
+        elif self.enemy_score == 10 and self.AI_switch == 1:
             boy.x = 600
             boy.y = 70
             enemy_ai.x = 100
@@ -156,7 +156,7 @@ class Ball:
             self.direction = 1
             game_framework.change_mode(win_2_mode)
 
-        elif self.boy_score == 5 and self.AI_switch == 1:
+        elif self.boy_score == 10 and self.AI_switch == 1:
             boy.x = 600
             boy.y = 70
             enemy_ai.x = 100
