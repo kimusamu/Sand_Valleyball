@@ -97,12 +97,6 @@ class Ball:
                 self.left = 1
                 self.x = 200
                 self.y = 600
-                self.velocity = 1
-                self.jump = 0
-                self.jump_speed = 5
-                self.x_speed = 1
-                self.elapsed_time = 0
-                self.direction = 1
 
             elif(self.x >= 400):
                 self.boy_score += 1
@@ -110,12 +104,6 @@ class Ball:
                 self.left = 1
                 self.x = 600
                 self.y = 600
-                self.velocity = 1
-                self.jump = 0
-                self.jump_speed = 5
-                self.x_speed = 1
-                self.elapsed_time = 0
-                self.direction = 1
 
         if self.enemy_score == 5 and self.AI_switch == 0:
             boy.x = 600
